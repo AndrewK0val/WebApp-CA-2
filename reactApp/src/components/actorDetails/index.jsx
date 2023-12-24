@@ -12,7 +12,7 @@ import ActorMovieCreditsCard from "../actorPortfolioCard";
 import { useQuery } from "react-query";
 import { Grid } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
-import { getActorPortofolio } from "../../api/tmdb-api";
+import { getActorPortofolio } from "../../api/movies-api";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 

@@ -16,12 +16,25 @@ export const getMovies = (page) => {
   })
 }
 
-// export const getMovies = async () => {
+export const getUpcomingMovies = async (page) => {
+  const response = await fetch(
+    `http://localhost:8080/api/movies/tmdb/upcoming${page}`, {headers: {'Authorization': window.localStorage.getItem('token')}}
+  )
+  return response.json();
+};
+
+// export const getMovie = async (args) => {
+//   console.log(args)
+//   const [, idPart] = args.queryKey
+//   const { id } = idPart
 //   const response = await fetch(
-//     'http://localhost:8080/api/movies', {headers: {'Authorization': window.localStorage.getItem('token')}}
+//     `http://localhost:8080/api/movies/${id}`, {headers: {'Authorization': window.localStorage.getItem('token')}}
 //   )
 //   return response.json();
 // };
+
+
+// struggled for two hours with getMovie on the backend but kept getting a cross origin error so I left it to use TMDB 
 
 export const getMovie = (args) => {
   console.log(args)
@@ -43,9 +56,7 @@ export const getMovie = (args) => {
 
 export const getGenres = async () => {
   return fetch(
-    "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
-      process.env.REACT_APP_TMDB_KEY +
-      "&language=en-US"
+    'http://localhost:8080/api/movies/tmdb/genres', {headers: {'Authorization': window.localStorage.getItem('token')}}
   ).then( (response) => {
     if (!response.ok) {
       throw new Error(response.json().message)
@@ -75,7 +86,6 @@ export const getMovieImages = ({ queryKey }) => {
 }
 
 
-
 export const getMovieReviews = (id) => {
     return fetch(
       `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.REACT_APP_TMDB_KEY}`
@@ -87,21 +97,21 @@ export const getMovieReviews = (id) => {
       })
   }
 
-  export const getUpcomingMovies = (page) => {
-    console.log("page: " + parseInt(page))
+  // export const getUpcomingMovies = (page) => {
+  //   console.log("page: " + parseInt(page))
 
-    return fetch(
-      `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&page=${page}`
-    ).then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message)
-      }
-      return response.json()
-    })
-    .catch((error) => {
-       throw error
-    })
-  }
+  //   return fetch(
+  //     'https://localhost:8080/api/movies/tmdb/upcoming'
+  //   ).then((response) => {
+  //     if (!response.ok) {
+  //       throw new Error(response.json().message)
+  //     }
+  //     return response.json()
+  //   })
+  //   .catch((error) => {
+  //      throw error
+  //   })
+  // }
 
 
   export const getTopRatedMovies = (page) => {
@@ -235,3 +245,27 @@ export const getMovieReviews = (id) => {
        throw error;
     });
   };
+
+
+
+  export const login = async (username, password) => {
+    const response = await fetch('http://localhost:8080/api/users', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'post',
+        body: JSON.stringify({ username: username, password: password })
+    });
+    return response.json();
+};
+
+export const signup = async (username, password) => {
+    const response = await fetch('http://localhost:8080/api/users?action=register', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'post',
+        body: JSON.stringify({ username: username, password: password })
+    });
+    return response.json();
+};

@@ -21,6 +21,10 @@ import SimilarMoviesPage from "./pages/similarMoviesPage";
 import MovieActorsPage from "./pages/movieActorsPage";
 import Box from '@mui/material/Box'
 import MovieActorDetails from "./components/actorDetails";
+import ProtectedRoutes from "./protectedRoutes";
+import AuthContextProvider from "./contexts/authContext";
+
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,23 +43,27 @@ function App() {
     <Box sx={{ overflowX: 'hidden', overflowY:'hidden', padding:'none', transform: 'translateX(-0.5rem),translateY(-2rem) ', backgroundColor:'#e0e0e0' }}>
       <QueryClientProvider client={queryClient}>
           <Router>
-            <SiteHeader />
             <MoviesContextProvider>
-              <Routes>
-                <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
-                <Route path="/authentication" element={<LoginOrSignupPage/>} />
-                <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
-                <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
-                <Route path="/movies/topRated" element={<TopRatedMoviesPage />} />
-                <Route path="movies/popular" element={<PopularMoviesPage/>}/>
-                <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
-                <Route path="/movies/similar-to/:id" element={<SimilarMoviesPage />}/>
-                <Route path="/movies/:id" element={<MoviePage />} />
-                <Route path={"/actors/:id"} element/>
-                <Route path="/actors/staring-in/:id" element={<MovieActorsPage />}/>
-                <Route path="/" element={<HomePage />} />
-                <Route path="*" element={ <Navigate to="/" /> } />
-              </Routes>
+              <AuthContextProvider>
+                <SiteHeader />
+
+                <Routes>
+                  <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
+                  <Route path="/authentication" element={<LoginOrSignupPage/>} />
+                  <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+                  <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
+                  <Route path="/movies/topRated" element={<TopRatedMoviesPage />} />
+                  <Route path="movies/popular" element={<PopularMoviesPage/>}/>
+                  <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
+                  <Route path="/movies/similar-to/:id" element={<SimilarMoviesPage />}/>
+                  <Route path="/movies/:id" element={<MoviePage />} />
+                  <Route path={"/actors/:id"} element/>
+                  <Route path="/actors/staring-in/:id" element={<MovieActorsPage />}/>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="*" element={ <Navigate to="/" /> } />
+                </Routes>
+
+              </ AuthContextProvider>
             </ MoviesContextProvider>
           </Router>
         <ReactQueryDevtools initialIsOpen={false} />

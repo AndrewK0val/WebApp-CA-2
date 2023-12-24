@@ -4,7 +4,7 @@ import ActorsListTemplate from "../components/templateMovieActorsPage"
 import AddToFavoritesIcon from '../components/cardIcons/addToFavorites'
 import { useQuery } from 'react-query'
 import Spinner from '../components/spinner'
-import {  getMovieActor } from '../api/tmdb-api'
+import {  getMovieActor } from '../api/movies-api'
 import { useParams } from 'react-router-dom'
 
 const MovieActorsPage = () => {

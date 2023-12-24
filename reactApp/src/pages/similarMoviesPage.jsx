@@ -3,7 +3,7 @@ import PageTemplate from "../components/templateMovieListPage"
 import AddToFavoritesIcon from '../components/cardIcons/addToFavorites'
 import { useQuery } from 'react-query'
 import Spinner from '../components/spinner'
-import { getSimilarMovies, getMovie } from '../api/tmdb-api'
+import { getSimilarMovies, getMovie } from '../api/movies-api'
 import { useParams } from 'react-router-dom'
 
 const SimilarMoviesPage = () => {

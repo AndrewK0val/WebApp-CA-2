@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import PageTemplate from '../components/templateMovieListPage'
-import { getUpcomingMovies } from "../api/tmdb-api"
+import { getUpcomingMovies } from "../api/movies-api"
 import AddToWatch from '../components/cardIcons/addToWatch'
 import Spinner from '../components/spinner'
 import { isError, useQuery } from "react-query"

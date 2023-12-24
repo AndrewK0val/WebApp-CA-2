@@ -1,38 +1,39 @@
 import movieModel from './movieModel';
 import asyncHandler from 'express-async-handler';
 import express from 'express';
-import {getMovies, getUpcomingMovies, getGenres  } from '../tmdb-api';
+import { getMovies, getUpcomingMovies, getGenres, getMovie, getReviews } from '../tmdb-api';
+// import cors from 'cors';
+
 const router = express.Router();
 
-// router.get('/', asyncHandler(async (req, res) => {
-//     let { page = 1, limit = 30 } = req.query; // destructure page and limit and set default values
-//     [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
-
-//     // Parallel execution of counting movies and getting movies using movieModel
-//     const [total_results, results] = await Promise.all([
-//         movieModel.estimatedDocumentCount(),
-//         movieModel.find().limit(limit).skip((page - 1) * limit)
-//     ]);
-//     const total_pages = Math.ceil(total_results / limit); //Calculate total number of pages (= total No Docs/Number of docs per page) 
-
-//     //construct return Object and insert into response object
-//     const returnObject = {
-//         page,
-//         total_pages,
-//         total_results,
-//         results
-//     };
-//     res.status(200).json(returnObject);
-// }));
-
-
-router.get('/:page', asyncHandler(async (req, res) => {
-    const page = parseInt(req.params.page);
-    const movies = await getMovies(page);
-    res.status(200).json(movies);
-}));
+// No need to use cors(corsOptions) here, as CORS is already applied globally in your API
+// router.use(cors(corsOptions));
 
 // Get movie details
+
+router.get('/tmdb/upcoming:page', asyncHandler(async (req, res) => {
+  const page = parseInt(req.params.page);
+  const upcomingMovies = await getUpcomingMovies(page);
+  res.status(200).json(upcomingMovies);
+}));
+
+router.get('/tmdb/genres', asyncHandler(async (req, res) => {
+  const genres = await getGenres();
+  res.status(200).json(genres);
+}));
+
+router.get('/:page', asyncHandler(async (req, res) => {
+  const page = parseInt(req.params.page);
+  const movies = await getMovies(page);
+  res.status(200).json(movies);
+}));
+
+router.get('/tmdb/reviews:id' , asyncHandler(async (req, res) => {
+  const id = parseInt(req.params.id);
+  const reviews = await getReviews(id);
+  res.status(200).json(reviews);
+}));
+
 router.get('/:id', asyncHandler(async (req, res) => {
     const id = parseInt(req.params.id);
     const movie = await movieModel.findByMovieDBId(id);
@@ -43,15 +44,6 @@ router.get('/:id', asyncHandler(async (req, res) => {
     }
 }));
 
-router.get('/tmdb/upcoming', asyncHandler(async (req, res) => {
-    const upcomingMovies = await getUpcomingMovies();
-    res.status(200).json(upcomingMovies);
-}));
 
-
-router.get('/tmdb/genres', asyncHandler(async (req,res) => {
-    const genres = await getGenres();
-    res.status(200).json(genres);
-}));
 
 export default router;

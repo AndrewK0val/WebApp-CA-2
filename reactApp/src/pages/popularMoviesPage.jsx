@@ -1,6 +1,6 @@
 import React from "react";
 import PageTemplate from '../components/templateMovieListPage'
-import { getPopularMovies } from "../api/tmdb-api";
+import { getPopularMovies } from "../api/movies-api";
 import AddToWatch from '../components/cardIcons/addToWatch'
 import Spinner from '../components/spinner';
 import { useQuery } from "react-query";

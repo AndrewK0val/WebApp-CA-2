@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import AppBar from "@mui/material/AppBar"
 import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
@@ -14,13 +14,15 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import { useTheme } from '@mui/material/styles'
 import PersonIcon from '@mui/icons-material/Person'
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
+import { AuthContext } from "../../contexts/authContext";
+
 
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar)
 
 
-
 const SiteHeader = ({ history }) => {
+  const context = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const theme = useTheme()
@@ -28,14 +30,6 @@ const SiteHeader = ({ history }) => {
 
   const navigate = useNavigate()
 
-  function isUserLoggedIn() {
-    // return localStorage.getItem("username")
-    if(localStorage.getItem("username")){
-      return localStorage.getItem("username")
-    }else{
-      return "login"
-    }
-  }
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -43,7 +37,7 @@ const SiteHeader = ({ history }) => {
     { label: "Upcoming Movies", path: "/movies/upcoming" },
     { label: "Top Rated", path: "/movies/topRated" },
     { label: "Popular", path: "/movies/popular" },
-    { label: "Login / Signup", path: "/authentication" },
+    // { label: "Login / Signup", path: "/authentication" },
   ]
 
   const handleMenuSelect = (pageURL) => {
@@ -113,6 +107,20 @@ const SiteHeader = ({ history }) => {
                     {opt.label}
                   </Button>
                 ))}
+
+                {context.isAuthenticated ? (
+                    <p>
+                      Welcome {context.userName}! <button onClick={() => context.signout()}>Sign out</button>
+                    </p>
+                  ): (
+                    <Button
+                    key={"Login / Signup"}
+                    color="inherit"
+                    onClick={() => handleMenuSelect("/authentication")} >
+                    Login / Signup
+                  </Button>
+                    )
+                  }
               </>
             )}
         </Toolbar>
